@@ -16,7 +16,7 @@ import azure.cognitiveservices.speech as speechsdk
 
 '''Object Detector AUthentication'''
 ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
-prediction_key = "84885c1265444390819a5df6c9f6fe47"
+prediction_key = ""
 
 # Replace with your published iteration name and project ID
 published_name = "Card Detector"
@@ -34,8 +34,8 @@ base_image_location = os.path.join (os.path.dirname(__file__), "Images")
 Authenticate
 Authenticates your credentials and creates a client.
 '''
-subscription_key = "5e6a70c79cb74f7497cda181e4e2c73a"
-endpoint = "https://pfaproject.cognitiveservices.azure.com/"
+subscription_key = ""
+endpoint = ""
 
 
 conn_str = "DefaultEndpointsProtocol=https;AccountName=pfarepository;AccountKey=q4JdcaRYynIn7EbAXmgXXCtqvxI9Pl8ebbMv88Te0dVfGw3chdz8i3qkCSOi9/bJNQ/Ft5fQqX/J+AStXd3h0Q==;EndpointSuffix=core.windows.net"
