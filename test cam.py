@@ -1,7 +1,7 @@
 import cv2
 import time
 # Open video capture device (webcam)
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 # Check if the capture device was successfully opened
 if not cap.isOpened():
