@@ -120,6 +120,7 @@ nn = 0
 print('Waiting')
 pir.wait_for_motion()
 while not Proceed:
+    stop = 0
     print('Waiting')
     pir.wait_for_motion()
     ret, frame = cap.read()
@@ -166,6 +167,9 @@ while not Proceed:
     else:
          cv2.imshow('Result', frame)
          print("NO FACE DETECTED")
+         stop+=1
+         if stop == 10:
+            cv2.destroyAllWindows()
     key = cv2.waitKey(1)
 
     if yes == 4:
