@@ -96,16 +96,16 @@ pir = MotionSensor(12)
 
 WIDTH = 640
 HEIGHT = 480
-FPS = 30
+FPS = 20.0
 
 for i in imageList:
     face.append(cv2.imread(f'{img_path}/{i}'))
     faces_name.append(os.path.splitext(i)[0])
 
     # Start video recording
-cap = cv2.VideoCapture(1)
-filename = 'footage.mp4'
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+cap = cv2.VideoCapture(0)
+filename = 'footage.avi'
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
 video_writer = cv2.VideoWriter(filename, fourcc, FPS, (WIDTH, HEIGHT))
 Proceed = False
 
