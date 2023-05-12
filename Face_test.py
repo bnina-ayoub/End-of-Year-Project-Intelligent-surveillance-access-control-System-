@@ -115,7 +115,7 @@ cap.set(3,640) # set Width
 cap.set(4,480) # set Height
 yes = 0
 nn = 0
-engine.say('I am in the while')
+engine.say('welcome')
 engine.runAndWait()
 while not Proceed:
     print('Waiting')
