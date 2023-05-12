@@ -120,11 +120,13 @@ nn = 0
 print('Waiting')
 pir.wait_for_motion()
 while not Proceed:
+    print('Waiting')
     pir.wait_for_motion()
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
     video_writer.write(fr)
+    cv2.imshow('Result',frame)
     faceCurentFrame = face_recognition.face_locations(fr)
     encodeCurentFrame = face_recognition.face_encodings(fr, faceCurentFrame)
     # print(len(encodeCurentFrame))
