@@ -131,6 +131,7 @@ while not Proceed:
     matches = [0]
     matchesIndex = 0
     name = "Unknown"
+    faceLoc = None
     for encodeface, faceLoc in zip(encodeCurentFrame, faceCurentFrame):
         matches = face_recognition.compare_faces(encodeListKnown, encodeface)
         faceDis = face_recognition.face_distance(encodeListKnown, encodeface)
