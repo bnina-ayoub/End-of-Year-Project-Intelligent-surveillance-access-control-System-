@@ -168,7 +168,8 @@ while not Proceed:
          print("NO FACE DETECTED")
          if int(time.time() - wait) > 5:
               cv2.destroyAllWindows()
-    key = cv2.waitKey(1)
+              print('Going back to sleep')
+              time.sleep(2)
 
     if yes == 4:
         #engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
