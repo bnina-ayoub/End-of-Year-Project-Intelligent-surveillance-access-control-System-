@@ -140,24 +140,28 @@ while not Proceed:
     print(matches)
     # faceDis is a list of the percentage of faces to compare. the low value is the close person
     # matches is a list of booleans contains true in the column of the person closest to the frame
-    if (matches[matchesIndex]):
-        name = faces_name[matchesIndex].upper()
-        # print(name)
-        # print(faceLoc)
-        indexx = name[name.index('{') + 1: name.index('}')]
-        name = name[0:name.index('(')]
-        yes = yes + 1
-    else:    
-        nn = nn + 1
-        print(nn)
-    y1 = faceLoc[0] * 4
-    x2 = faceLoc[1] * 4
-    y2 = faceLoc[2] * 4
-    x1 = faceLoc[3] * 4
-    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
-    cv2.rectangle(frame, (x1, y2 - 35), (x2, y2), (0, 0, 255), cv2.FILLED) 
-    cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2)
-    cv2.imshow('Result', frame)
+    if faceLoc is not None:
+        if (matches[matchesIndex]):
+            name = faces_name[matchesIndex].upper()
+            # print(name)
+            # print(faceLoc)
+            indexx = name[name.index('{') + 1: name.index('}')]
+            name = name[0:name.index('(')]
+            yes = yes + 1
+        else:    
+            nn = nn + 1
+            print(nn)
+        y1 = faceLoc[0] * 4
+        x2 = faceLoc[1] * 4
+        y2 = faceLoc[2] * 4
+        x1 = faceLoc[3] * 4
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+        cv2.rectangle(frame, (x1, y2 - 35), (x2, y2), (0, 0, 255), cv2.FILLED) 
+        cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2)
+        cv2.imshow('Result', frame)
+    else:
+         print("NO FACE DETECTED")
+         break
     key = cv2.waitKey(1)
 
     if yes == 4:
