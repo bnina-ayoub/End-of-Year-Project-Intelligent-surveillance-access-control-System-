@@ -104,7 +104,7 @@ for i in imageList:
     faces_name.append(os.path.splitext(i)[0])
 
     # Start video recording
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 filename = 'footage.avi'
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 video_writer = cv2.VideoWriter(filename, fourcc, FPS, (WIDTH, HEIGHT))
