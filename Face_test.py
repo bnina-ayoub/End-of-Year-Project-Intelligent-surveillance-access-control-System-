@@ -117,9 +117,9 @@ yes = 0
 nn = 0
 engine.say('welcome')
 engine.runAndWait()
+pir.wait_for_motion()
 while not Proceed:
     print('Waiting')
-    pir.wait_for_motion()
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
@@ -142,9 +142,9 @@ while not Proceed:
     if len(faceCurentFrame) == 0:
         # no face detected, stop recording
         video_writer.release()
-        #break
+        if pir.wait_for_no_motion():
+            break
     elif (matches[matchesIndex]):
-        # face is allowed in the gym
         name = faces_name[matchesIndex].upper()
         # print(name)
         # print(faceLoc)
@@ -169,7 +169,6 @@ while not Proceed:
         print(indexx)
         Proceed = True
         video_writer.release()
-        #break
     elif nn - yes == 300:
             (x1, y1, x2, y2) = faceLoc
             cv2.rectangle(frame, (4*x1, 4*y1), (4*x2, 4*y2), (0, 0, 255), 2)
@@ -178,8 +177,10 @@ while not Proceed:
             engine.runAndWait()
             video_writer.release()
             #break
+    
     cv2.imwrite(face_path, frame)
 cap.release()
+video_writer.release()
 
 
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -187,9 +188,9 @@ share_service_client = ShareServiceClient.from_connection_string(connection_stri
 # Get a ShareDirectoryClient object for the folder you want to upload the image to
 Video_folder = share_service_client.get_share_client(share_name).get_directory_client("Videos")
 # Upload the image to the folder
-file_client = Video_folder.upload_file(f"footage_{timestamp}.mp4", data=open(filename, "rb"))
+file_client = Video_folder.upload_file(f"footage_{timestamp}.avi", data=open(filename, "rb"))
 # Release video resources
-Face_folder = share_service_client.get_share_client(share_name).get_directory_client("Fa")
+Face_folder = share_service_client.get_share_client(share_name).get_directory_client("Faces")
 
 # Upload the image to the folder
 file_client = Face_folder.upload_file(f"Detected_Face_{timestamp}.jpg", data=open(face_path, "rb"))
