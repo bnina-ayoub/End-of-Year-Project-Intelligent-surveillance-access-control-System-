@@ -127,8 +127,6 @@ while not Proceed:
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
     video_writer.write(frame)
-    cv2.imshow('Result', frame)
-    video_writer.write(frame)
     faceCurentFrame = face_recognition.face_locations(fr)
     encodeCurentFrame = face_recognition.face_encodings(fr, faceCurentFrame)
     # print(len(encodeCurentFrame))
@@ -148,7 +146,6 @@ while not Proceed:
     # matches is a list of booleans contains true in the column of the person closest to the frame
     if faceLoc is not None:
         if (matches[matchesIndex]):
-            cv2.imshow('Result', frame)
             name = faces_name[matchesIndex].upper()
             # print(name)
             # print(faceLoc)
@@ -167,7 +164,6 @@ while not Proceed:
         cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2)
         cv2.imshow('Result', frame)
     else:
-         cv2.imshow('Result', frame)
          print("NO FACE DETECTED")
          if int(time.time() - wait) > 15:
             print('Closing Screen')
