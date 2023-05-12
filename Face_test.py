@@ -170,9 +170,8 @@ while not Proceed:
          cv2.imshow('Result', frame)
          print("NO FACE DETECTED")
          if int(time.time() - wait) > 15:
-              cv2.destroyAllWindows()
-              print('Going back to sleep')
-              time.sleep(2)
+            print('Closing Screen')
+              #cv2.destroyAllWindows()
 
     if yes == 4:
         #engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
