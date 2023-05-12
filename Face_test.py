@@ -121,6 +121,7 @@ wait = time.time()
 print('Waiting')
 pir.wait_for_motion()
 while not Proceed:
+    print('Waiting')
     pir.wait_for_motion()
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
@@ -166,7 +167,7 @@ while not Proceed:
     else:
          cv2.imshow('Result', frame)
          print("NO FACE DETECTED")
-         if int(time.time() - wait) > 5:
+         if int(time.time() - wait) > 15:
               cv2.destroyAllWindows()
               print('Going back to sleep')
               time.sleep(2)
