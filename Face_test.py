@@ -162,7 +162,6 @@ while not Proceed:
         cv2.imshow('Result', frame)
     else:
          print("NO FACE DETECTED")
-         break
     key = cv2.waitKey(1)
 
     if yes == 4:
