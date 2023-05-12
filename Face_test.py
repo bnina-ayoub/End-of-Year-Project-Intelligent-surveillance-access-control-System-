@@ -104,7 +104,7 @@ for i in imageList:
     faces_name.append(os.path.splitext(i)[0])
 
     # Start video recording
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 filename = 'footage.avi'
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 video_writer = cv2.VideoWriter(filename, fourcc, FPS, (WIDTH, HEIGHT))
@@ -130,6 +130,7 @@ while not Proceed:
     # print(len(faceCurentFrame))
     matches = [0]
     matchesIndex = 0
+    name = "Unknown"
     for encodeface, faceLoc in zip(encodeCurentFrame, faceCurentFrame):
         matches = face_recognition.compare_faces(encodeListKnown, encodeface)
         faceDis = face_recognition.face_distance(encodeListKnown, encodeface)
@@ -139,26 +140,23 @@ while not Proceed:
     print(matches)
     # faceDis is a list of the percentage of faces to compare. the low value is the close person
     # matches is a list of booleans contains true in the column of the person closest to the frame
-    if len(faceCurentFrame) == 0:
-        # no face detected, stop recording
-        video_writer.release()
-        #break
-    elif (matches[matchesIndex]):
+    if (matches[matchesIndex]):
         name = faces_name[matchesIndex].upper()
         # print(name)
         # print(faceLoc)
         indexx = name[name.index('{') + 1: name.index('}')]
-        y1 = faceLoc[0] * 4
-        x2 = faceLoc[1] * 4
-        y2 = faceLoc[2] * 4
-        x1 = faceLoc[3] * 4
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
-        cv2.rectangle(frame, (x1, y2 - 35), (x2, y2), (0, 0, 255), cv2.FILLED)
         name = name[0:name.index('(')]
-        cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2)
         yes = yes + 1
-    nn = nn + 1
-    print(nn)
+    else:    
+        nn = nn + 1
+        print(nn)
+    y1 = faceLoc[0] * 4
+    x2 = faceLoc[1] * 4
+    y2 = faceLoc[2] * 4
+    x1 = faceLoc[3] * 4
+    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    cv2.rectangle(frame, (x1, y2 - 35), (x2, y2), (0, 0, 255), cv2.FILLED) 
+    cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2)
     cv2.imshow('Result', frame)
     key = cv2.waitKey(1)
 
@@ -169,9 +167,6 @@ while not Proceed:
         Proceed = True
         video_writer.release()
     elif nn - yes == 300:
-            (x1, y1, x2, y2) = faceLoc
-            cv2.rectangle(frame, (4*x1, 4*y1), (4*x2, 4*y2), (0, 0, 255), 2)
-            cv2.putText(frame, "Unknown", (4*x1, 4*y1-10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
             engine.say(name, 'Visage non reconnue')
             engine.runAndWait()
             video_writer.release()
@@ -181,6 +176,7 @@ while not Proceed:
 pir.wait_for_no_motion()
 cap.release()
 video_writer.release()
+cv2.destroyAllWindows()
 
 
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
