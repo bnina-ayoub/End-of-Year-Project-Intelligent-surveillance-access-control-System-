@@ -127,7 +127,7 @@ while not Proceed:
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
     cv2.imshow('Result', frame)
-    video_writer.write(fr)
+    video_writer.write(frame)
     faceCurentFrame = face_recognition.face_locations(fr)
     encodeCurentFrame = face_recognition.face_encodings(fr, faceCurentFrame)
     # print(len(encodeCurentFrame))
@@ -169,9 +169,8 @@ while not Proceed:
          cv2.imshow('Result', frame)
          print("NO FACE DETECTED")
          if int(time.time() - wait) > 15:
-              cv2.destroyAllWindows()
-              print('Going back to sleep')
-              time.sleep(2)
+            print('Closing Screen')
+              #cv2.destroyAllWindows()
 
     if yes == 4:
         #engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
