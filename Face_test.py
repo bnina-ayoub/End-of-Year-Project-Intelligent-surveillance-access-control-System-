@@ -142,8 +142,7 @@ while not Proceed:
     if len(faceCurentFrame) == 0:
         # no face detected, stop recording
         video_writer.release()
-        if pir.wait_for_no_motion():
-            break
+        break
     elif (matches[matchesIndex]):
         name = faces_name[matchesIndex].upper()
         # print(name)
@@ -179,6 +178,7 @@ while not Proceed:
             #break
     
     cv2.imwrite(face_path, frame)
+pir.wait_for_no_motion()
 cap.release()
 video_writer.release()
 
