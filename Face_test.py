@@ -167,19 +167,18 @@ while not Proceed:
     key = cv2.waitKey(1)
 
     if yes == 4:
-        engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
-        engine.runAndWait()
+        #engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
+        #engine.runAndWait()
         print(indexx)
         Proceed = True
         video_writer.release()
     elif nn - yes == 300:
-            engine.say(name, 'Visage non reconnue')
-            engine.runAndWait()
+            #engine.say(name, 'Visage non reconnue')
+            #engine.runAndWait()
             video_writer.release()
-            #break
+            break
     
     cv2.imwrite(face_path, frame)
-pir.wait_for_no_motion()
 cap.release()
 video_writer.release()
 cv2.destroyAllWindows()
