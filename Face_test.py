@@ -117,6 +117,7 @@ yes = 0
 nn = 0
 #engine.say('I am in the while')
 #engine.runAndWait()
+wait = time.time()
 print('Waiting')
 pir.wait_for_motion()
 while not Proceed:
@@ -144,6 +145,7 @@ while not Proceed:
     # matches is a list of booleans contains true in the column of the person closest to the frame
     if faceLoc is not None:
         if (matches[matchesIndex]):
+            cv2.imshow('Result', frame)
             name = faces_name[matchesIndex].upper()
             # print(name)
             # print(faceLoc)
@@ -164,6 +166,8 @@ while not Proceed:
     else:
          cv2.imshow('Result', frame)
          print("NO FACE DETECTED")
+         if int(time.time() - wait) > 5:
+              cv2.destroyAllWindows()
     key = cv2.waitKey(1)
 
     if yes == 4:
