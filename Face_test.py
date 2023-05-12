@@ -80,6 +80,7 @@ def findEncodeing1(img):
 
 base_image_location = os.path.join(os.path.dirname(__file__))
 img_path = os.path.join(base_image_location,"faces")
+face_path = os.path.join(base_image_location,'Face.jpg')
 imageList = os.listdir(img_path)
 face = []
 faces_name = []
@@ -178,7 +179,7 @@ while not Proceed:
             engine.runAndWait()
             video_writer.release()
             #break
-    cv2.imwrite(img_path, frame)
+    cv2.imwrite(face_path, frame)
 cap.release()
 
 
@@ -192,6 +193,6 @@ file_client = Video_folder.upload_file(f"footage_{timestamp}.mp4", data=open(fil
 Face_folder = share_service_client.get_share_client(share_name).get_directory_client("Videos")
 
 # Upload the image to the folder
-file_client = Face_folder.upload_file(f"Detected_Face_{timestamp}.jpg", data=open(os.path.join(img_path, "rb")))
+file_client = Face_folder.upload_file(f"Detected_Face_{timestamp}.jpg", data=open(face_path, "rb"))
 
 
