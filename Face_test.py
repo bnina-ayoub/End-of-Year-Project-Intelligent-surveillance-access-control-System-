@@ -111,7 +111,6 @@ video_writer = cv2.VideoWriter(filename, fourcc, FPS, (WIDTH, HEIGHT))
 Proceed = False
 
 encodeListKnown = findEncodeing1(face)
-cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
 cap.set(3,640) # set Width
 cap.set(4,480) # set Height
 yes = 0
@@ -122,9 +121,9 @@ while not Proceed:
     print('Waiting')
     pir.wait_for_motion()
     ret, frame = cap.read()
-    video_writer.write(frame)
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
+    video_writer.write(frame)
     faceCurentFrame = face_recognition.face_locations(fr)
     encodeCurentFrame = face_recognition.face_encodings(fr, faceCurentFrame)
     # print(len(encodeCurentFrame))
@@ -190,7 +189,7 @@ Video_folder = share_service_client.get_share_client(share_name).get_directory_c
 # Upload the image to the folder
 file_client = Video_folder.upload_file(f"footage_{timestamp}.mp4", data=open(filename, "rb"))
 # Release video resources
-Face_folder = share_service_client.get_share_client(share_name).get_directory_client("Videos")
+Face_folder = share_service_client.get_share_client(share_name).get_directory_client("Fa")
 
 # Upload the image to the folder
 file_client = Face_folder.upload_file(f"Detected_Face_{timestamp}.jpg", data=open(face_path, "rb"))
