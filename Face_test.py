@@ -126,6 +126,7 @@ while not Proceed:
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
+    cv2.imshow('Result', frame)
     video_writer.write(fr)
     faceCurentFrame = face_recognition.face_locations(fr)
     encodeCurentFrame = face_recognition.face_encodings(fr, faceCurentFrame)
