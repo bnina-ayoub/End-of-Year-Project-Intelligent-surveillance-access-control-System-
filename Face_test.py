@@ -109,16 +109,17 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 video_writer = cv2.VideoWriter(filename, fourcc, FPS, (WIDTH, HEIGHT))
 Proceed = False
 
-while  Proceed:
-    engine.say('I am in the while')
-    engine.runAndWait()
+encodeListKnown = findEncodeing1(face)
+cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
+cap.set(3,640) # set Width
+cap.set(4,480) # set Height
+yes = 0
+nn = 0
+engine.say('I am in the while')
+engine.runAndWait()
+while not Proceed:
+    print('Waiting')
     pir.wait_for_motion()
-    encodeListKnown = findEncodeing1(face)
-    cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
-    cap.set(3,640) # set Width
-    cap.set(4,480) # set Height
-    yes = 0
-    nn = 0
     ret, frame = cap.read()
     video_writer.write(frame)
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
@@ -141,7 +142,7 @@ while  Proceed:
     if len(faceCurentFrame) == 0:
         # no face detected, stop recording
         video_writer.release()
-        break
+        #break
     elif (matches[matchesIndex]):
         # face is allowed in the gym
         name = faces_name[matchesIndex].upper()
@@ -161,13 +162,14 @@ while  Proceed:
     print(nn)
     cv2.imshow('Result', frame)
     key = cv2.waitKey(1)
+
     if yes == 4:
         engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
         engine.runAndWait()
         print(indexx)
         Proceed = True
         video_writer.release()
-        break
+        #break
     elif nn - yes == 300:
             (x1, y1, x2, y2) = faceLoc
             cv2.rectangle(frame, (4*x1, 4*y1), (4*x2, 4*y2), (0, 0, 255), 2)
@@ -175,7 +177,7 @@ while  Proceed:
             engine.say(name, 'Visage non reconnue')
             engine.runAndWait()
             video_writer.release()
-            break
+            #break
     cv2.imwrite(img_path, frame)
 cap.release()
 
