@@ -119,9 +119,9 @@ yes = 0
 nn = 0
 
 print('Waiting')
-
+pir.wait_for_motion()
+led.color = Color(0, 0, 1)
 while pir.wait_for_motion() and not Proceed:
-    led.color = Color(0, 0, 1)
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
@@ -210,8 +210,6 @@ This API call can also extract handwriting style text (not shown).
     '''
 print("===== Afficher Votre Carte Etudiant =====")
 
-engine.say('Afficher Votre Carte Etudiant')
-engine.runAndWait()
 
 
     # Capturing a frame from the webcam
@@ -250,6 +248,7 @@ for prediction in results.predictions:
         predictions.append(prediction.tag_name)
         # set flag to True if at least one card is detected
         card_detected = True
+        led.color = Color(0, 0, 1)
         print("\t" + prediction.tag_name + ": {0:.2f}% bbox.left = {1:.2f}, bbox.top = {2:.2f}, bbox.width = {3:.2f}, bbox.height = {4:.2f}".format(prediction.probability * 100, prediction.bounding_box.left, prediction.bounding_box.top, prediction.bounding_box.width, prediction.bounding_box.height))
         left = int(prediction.bounding_box.left * img.shape[1])
         top = int(prediction.bounding_box.top * img.shape[0])
@@ -262,6 +261,7 @@ for prediction in results.predictions:
 
     # check flag to see if any cards were detected
 if 'Carte ID' in predictions:
+        led.color = Color(1, 0, 0)
         engine.say('Les cartes id ne sont pas accepte')
         engine.runAndWait()
         print('Les cartes id ne sont pas accepte')
@@ -310,9 +310,8 @@ elif 'Carte Etudiant' in predictions:
                         break
 else:
     print('Aucune carte Etudiant n\'a éte detecte')
-    engine.say('Aucune carte Etudiant n\'a éte detecte')
-    engine.runAndWait()
-    led.color = Color(0, 0, 0)
+    #engine.say('Aucune carte Etudiant n\'a éte detecte')
+    #engine.runAndWait()
 
 cv2.imshow("Image with predictions", img)
         #Speech
@@ -322,9 +321,9 @@ print("URL of the uploaded image:", file_url)
 cv2.waitKey(3000)
 cap.release()
 cv2.destroyAllWindows()
+led.color = Color(0, 0, 0)
 '''
 END - Read File - remote
 '''
 
 print("End of Program.")
-
