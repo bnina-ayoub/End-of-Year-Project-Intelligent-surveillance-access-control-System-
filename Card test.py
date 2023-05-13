@@ -4,8 +4,8 @@ from azure.cognitiveservices.vision.computervision.models import VisualFeatureTy
 from azure.cognitiveservices.vision.customvision.prediction import CustomVisionPredictionClient
 from msrest.authentication import CognitiveServicesCredentials
 from msrest.authentication import ApiKeyCredentials
-import face_recognition
-from gpiozero import MotionSensor
+#import face_recognition
+#from gpiozero import MotionSensor
 import cv2
 import numpy as np
 from array import array
@@ -31,7 +31,7 @@ ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
 prediction_key = "84885c1265444390819a5df6c9f6fe47"
 
 # Replace with your published iteration name and project ID
-published_name = "Card Detector"
+published_name = "FinalModelCard"
 project_id = "ba1ef21d-6dbc-4ea6-a4fe-aab291aab144"
 
 # Authenticate with the Custom Vision service
