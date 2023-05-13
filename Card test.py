@@ -178,7 +178,9 @@ while 1:
                             #engine.say('Acces Refusé')
                             #engine.runAndWait()     
     else:
-         print('Aucune carte Etudiant n\'a éte detecte')
+        print('Aucune carte Etudiant n\'a éte detecte')
+        #engine.say('Aucune carte Etudiant n\'a éte detecte')
+        #engine.runAndWait()
     if cv2.waitKey(1) == ord('q') or exists:
          break
             #Speech
