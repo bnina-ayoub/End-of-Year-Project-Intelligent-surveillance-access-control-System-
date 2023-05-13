@@ -93,9 +93,21 @@ while 1:
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
     img = cv2.imread(img_path)
+    cv2.imwrite(img_path, frame)
+    share_service_client = ShareServiceClient.from_connection_string(connection_string)
+
+    # Get a ShareDirectoryClient object for the folder you want to upload the image to
+    Cards_folder = share_service_client.get_share_client(share_name).get_directory_client("Cards")
+
+    # Upload the image to the folder
+    file_client = Cards_folder.upload_file(f"card_detected_{timestamp}.jpg", data=open(img_path, "rb"))
+
+    # Get the URL of the uploaded image
+    file_url = file_client.url
+
 
     # Call API with URL and raw response (allows you to get the operation location)
-    read_response = computervision_client.read_in_stream(img,  raw=True)
+    read_response = computervision_client.read(file_url,  raw=True)
 
     # Get the operation location (URL with an ID at the end) from the response
     read_operation_location = read_response.headers["Operation-Location"]
@@ -184,17 +196,6 @@ while 1:
     if cv2.waitKey(1) == ord('q') or exists:
          break
             #Speech
-cv2.imwrite(img_path, frame)
-share_service_client = ShareServiceClient.from_connection_string(connection_string)
-
-    # Get a ShareDirectoryClient object for the folder you want to upload the image to
-Cards_folder = share_service_client.get_share_client(share_name).get_directory_client("Cards")
-
-    # Upload the image to the folder
-file_client = Cards_folder.upload_file(f"card_detected_{timestamp}.jpg", data=open(img_path, "rb"))
-
-    # Get the URL of the uploaded image
-file_url = file_client.url
 
     # Print the URL of the uploaded image
 print("URL of the uploaded image:", file_url)
