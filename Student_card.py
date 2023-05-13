@@ -5,7 +5,8 @@ from azure.cognitiveservices.vision.customvision.prediction import CustomVisionP
 from msrest.authentication import CognitiveServicesCredentials
 from msrest.authentication import ApiKeyCredentials
 import face_recognition
-from gpiozero import MotionSensor
+from gpiozero import MotionSensor, RGBLED
+from colorzero import Color
 import cv2
 import numpy as np
 from array import array
@@ -105,7 +106,7 @@ for i in imageList:
     faces_name.append(os.path.splitext(i)[0])
 
     # Start video recording
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 filename = 'footage.avi'
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 video_writer = cv2.VideoWriter(filename, fourcc, FPS, (WIDTH, HEIGHT))
@@ -119,7 +120,7 @@ nn = 0
 
 print('Waiting')
 
-while pir.wait_for_no_motion() and not Proceed:
+while pir.wait_for_motion() and not Proceed:
     led.color = Color(0, 0, 1)
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
