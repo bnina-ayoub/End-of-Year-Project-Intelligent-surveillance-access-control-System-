@@ -210,7 +210,7 @@ This API call can also extract handwriting style text (not shown).
     '''
 print("===== Afficher Votre Carte Etudiant =====")
 
-engine.say('Afficher Votre Carte Etudiant')
+engine.say('Show your student Card')
 engine.runAndWait()
 
 
