@@ -73,7 +73,7 @@ base_image_location = os.path.join(os.path.dirname(__file__))
 approved = ['BNINA AYOUB', 'MZALI FIRAS', 'BNINA AYOUS']
 
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 '''
 OCR: Read File using the Read API, extract text - remote
