@@ -4,6 +4,8 @@ from azure.cognitiveservices.vision.computervision.models import VisualFeatureTy
 from azure.cognitiveservices.vision.customvision.prediction import CustomVisionPredictionClient
 from msrest.authentication import CognitiveServicesCredentials
 from msrest.authentication import ApiKeyCredentials
+from gpiozero import RGBLED
+from colorzero import Color
 #import face_recognition
 #from gpiozero import MotionSensor
 import cv2
@@ -72,7 +74,7 @@ base_image_location = os.path.join(os.path.dirname(__file__))
 
 approved = ['BNINA AYOUB', 'MZALI FIRAS', 'BNINA AYOUS']
 
-
+led = RGBLED(red=18, green=23, blue=24)
 cap = cv2.VideoCapture(0)
 cap.set(3,640)
 cap.set(4,480) 
@@ -121,6 +123,7 @@ for prediction in results.predictions:
         predictions.append(prediction.tag_name)
         # set flag to True if at least one card is detected
         card_detected = True
+        led.color = Color(0, 0, 1)
         print("\t" + prediction.tag_name + ": {0:.2f}% bbox.left = {1:.2f}, bbox.top = {2:.2f}, bbox.width = {3:.2f}, bbox.height = {4:.2f}".format(prediction.probability * 100, prediction.bounding_box.left, prediction.bounding_box.top, prediction.bounding_box.width, prediction.bounding_box.height))
         left = int(prediction.bounding_box.left * img.shape[1])
         top = int(prediction.bounding_box.top * img.shape[0])
@@ -133,6 +136,7 @@ for prediction in results.predictions:
 
     # check flag to see if any cards were detected
 if 'Carte ID' in predictions:
+        led.color = Color(1, 0, 0)
         engine.say('Les cartes id ne sont pas accepte')
         engine.runAndWait()
         print('Les cartes id ne sont pas accepte')
@@ -174,7 +178,7 @@ elif 'Carte Etudiant' in predictions:
                         break
                         
                     else:
-                        led.color = Color(0, 0, 0)
+                        led.color = Color(1, 0, 0)
                         print('Acces Refusé')    
                         engine.say('Acces Refusé')
                         engine.runAndWait()     
@@ -192,6 +196,7 @@ print("URL of the uploaded image:", file_url)
 cv2.waitKey(3000)
 cap.release()
 cv2.destroyAllWindows()
+led.color = Color(0, 0, 0)
 '''
 END - Read File - remote
 '''

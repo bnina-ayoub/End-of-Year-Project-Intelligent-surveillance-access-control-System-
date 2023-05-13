@@ -5,7 +5,8 @@ from azure.cognitiveservices.vision.customvision.prediction import CustomVisionP
 from msrest.authentication import CognitiveServicesCredentials
 from msrest.authentication import ApiKeyCredentials
 import face_recognition
-from gpiozero import MotionSensor
+from gpiozero import MotionSensor, RGBLED
+from colorzero import Color
 import cv2
 import numpy as np
 from array import array
@@ -119,9 +120,10 @@ nn = 0
 #engine.say('I am in the while')
 #engine.runAndWait()
 print('Waiting')
-
-while pir.wait_for_no_motion() and not Proceed:
-    led.color = Color(0, 0, 1)
+pir.wait_for_motion()
+led.color = Color(0, 0, 1)
+while pir.wait_for_motion() and not Proceed:
+    
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
