@@ -4,8 +4,6 @@ from azure.cognitiveservices.vision.computervision.models import VisualFeatureTy
 from azure.cognitiveservices.vision.customvision.prediction import CustomVisionPredictionClient
 from msrest.authentication import CognitiveServicesCredentials
 from msrest.authentication import ApiKeyCredentials
-from gpiozero import RGBLED
-from colorzero import Color
 import face_recognition
 from gpiozero import MotionSensor
 import cv2
@@ -19,15 +17,6 @@ import datetime
 from azure.storage.fileshare import ShareServiceClient, ShareDirectoryClient, ShareFileClient
 import pyttsx3
 
-# Initialize the text-to-speech engine
-engine = pyttsx3.init()
-
-# Set the voice to use
-#voices = engine.getProperty('voices')
-#engine.setProperty('voice', voices[1].id)
-
-# Set the speech rate
-#engine.setProperty('rate', 150)
 
 '''Object Detector AUthentication'''
 ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
@@ -80,10 +69,20 @@ def findEncodeing1(img):
             encodeList.append(encode)
         return encodeList
 
+# Initialize the text-to-speech engine
+engine = pyttsx3.init()
+
+# Set the voice to use
+#voices = engine.getProperty('voices')
+#engine.setProperty('voice', voices[1].id)
+
+# Set the speech rate
+#engine.setProperty('rate', 150)
 base_image_location = os.path.join(os.path.dirname(__file__))
 img_path = os.path.join(base_image_location,"faces")
 face_path = os.path.join(base_image_location,'Face.jpg')
 imageList = os.listdir(img_path)
+led = RGBLED(red=18, green=23, blue=24)
 face = []
 faces_name = []
 
@@ -117,10 +116,11 @@ cap.set(3,640) # set Width
 cap.set(4,480) # set Height
 yes = 0
 nn = 0
-#engine.say('I am in the while')
-#engine.runAndWait()
+
 print('Waiting')
+
 while pir.wait_for_no_motion() and not Proceed:
+    led.color = Color(0, 0, 1)
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
@@ -163,25 +163,26 @@ while pir.wait_for_no_motion() and not Proceed:
         cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2)
         cv2.imshow('Result', frame)
     else:
-         cv2.imshow('Result', frame)
-         print("NO FACE DETECTED")
-         stop+=1
-         if stop == 10:
-            cv2.destroyAllWindows()
-    key = cv2.waitKey(1)
+        cv2.imshow('Result', frame)
+        print("NO FACE DETECTED")
+        led.color = Color(0, 0, 0)
+        cv2.destroyAllWindows()
 
     if yes == 4:
-        #engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
-        #engine.runAndWait()
+        led.color = Color(0, 1, 0) 
+        engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
+        engine.runAndWait()
         print(indexx)
         Proceed = True
         video_writer.release()
     elif nn - yes == 300:
-            #engine.say(name, 'Visage non reconnue')
-            #engine.runAndWait()
+            engine.say(name, 'Visage non reconnue')
+            engine.runAndWait()
+            led.color = Color(1, 0, 0)
             video_writer.release()
             break
     
+    key = cv2.waitKey(1)
     cv2.imwrite(face_path, frame)
 cap.release()
 video_writer.release()
@@ -200,130 +201,129 @@ Face_folder = share_service_client.get_share_client(share_name).get_directory_cl
 # Upload the image to the folder
 file_client = Face_folder.upload_file(f"Detected_Face_{timestamp}.jpg", data=open(face_path, "rb"))
 
-
-
-
+led.color = Color(0, 0, 1)
 '''
 OCR: Read File using the Read API, extract text - remote
 This example will extract text in an image, then print results, line by line.
 This API call can also extract handwriting style text (not shown).
     '''
-print("===== Ne bouger pas =====")
+print("===== Afficher Votre Carte Etudiant =====")
 
-        # Convert the frame to a format expected by Custom Vision
-    # Now there is a trained endpoint that can be used to make a prediction
-        # Classify the image using Custom Vision
+engine.say('Afficher Votre Carte Etudiant')
+engine.runAndWait()
 
+
+    # Capturing a frame from the webcam
+img_path = os.path.join(base_image_location,"Cards", "card.jpg")
+ret, frame = cap.read()
+cv2.imwrite(img_path, frame)
+share_service_client = ShareServiceClient.from_connection_string(connection_string)
+# Get a ShareDirectoryClient object for the folder you want to upload the image to
+Cards_folder = share_service_client.get_share_client(share_name).get_directory_client("Cards")
+timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+# Upload the image to the folder
+file_client = Cards_folder.upload_file(f"card_detected_{timestamp}.jpg", data=open(img_path, "rb"))
+# Get the URL of the uploaded image
+file_url = file_client.url
+print(file_url)
+img = cv2.imread(img_path)
+# Call API with URL and raw response (allows you to get the operation location)
+read_response = computervision_client.read(file_url + '?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-05-14T03:43:32Z&st=2023-05-13T19:43:32Z&spr=https&sig=Rkk4D6Mi6aDlfe5GZ8IiX%2BILuDeM1OlHclj32GtH2vg%3D',  raw=True)
+# Get the operation location (URL with an ID at the end) from the response
+read_operation_location = read_response.headers["Operation-Location"]
+# Grab the ID from the URL
+operation_id = read_operation_location.split("/")[-1]
+# Calling the "GET" API and waiting for it to retrieve the results 
 while True:
-    # Capture a frame from the webcam
-    ret, frame = cap.read()
-    img_path = os.path.join(base_image_location, "Cards", "card.jpg")
-    cv2.imwrite(img_path, frame)
-
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-    share_service_client = ShareServiceClient.from_connection_string(connection_string)
-
-    # Get a ShareDirectoryClient object for the folder you want to upload the image to
-    Cards_folder = share_service_client.get_share_client(share_name).get_directory_client("Cards")
-
-    # Upload the image to the folder
-    file_client = Cards_folder.upload_file(f"card_detected_{timestamp}.jpg", data=open(img_path, "rb"))
-
-    # Get the URL of the uploaded image
-    file_url = file_client.url
-
-    # Print the URL of the uploaded image
-    print("URL of the uploaded image:", file_url)
-    img = cv2.imread(img_path)
-
-    # Construct the blob name with the timestamp
-    # Upload the file to Azure Blob Storage
-
-    # Get an image with text
-    read_image_url = file_client.url
-
-    # Call API with URL and raw response (allows you to get the operation location)
-    read_response = computervision_client.read(read_image_url,  raw=True)
-
-    # Get the operation location (URL with an ID at the end) from the response
-    read_operation_location = read_response.headers["Operation-Location"]
-    # Grab the ID from the URL
-    operation_id = read_operation_location.split("/")[-1]
-
-    # Call the "GET" API and wait for it to retrieve the results 
-    while True:
-        read_result = computervision_client.get_read_result(operation_id)
-        if read_result.status not in ['notStarted', 'running']:
-            break
-        time.sleep(1)
-    # show the image with rectangles drawn on it
-    with open(img_path, 'rb') as data:
-        results = predictor.detect_image(project_id, published_name, data)
-
-        # set flag to False initially
-    card_detected = False
-
-    # loop through predictions
-    predictions = []
-    for prediction in results.predictions:
-        if prediction.probability >= 0.9:
-            predictions.append(prediction.tag_name)
-            # set flag to True if at least one card is detected
-            card_detected = True
-            print("\t" + prediction.tag_name + ": {0:.2f}% bbox.left = {1:.2f}, bbox.top = {2:.2f}, bbox.width = {3:.2f}, bbox.height = {4:.2f}".format(prediction.probability * 100, prediction.bounding_box.left, prediction.bounding_box.top, prediction.bounding_box.width, prediction.bounding_box.height))
-            left = int(prediction.bounding_box.left * img.shape[1])
-            top = int(prediction.bounding_box.top * img.shape[0])
-            width = int(prediction.bounding_box.width * img.shape[1])
-            height = int(prediction.bounding_box.height * img.shape[0])
-
-            # draw the rectangle on the image
-            cv2.rectangle(img, (left, top), (left+width, top+height),(255,215,0), 2)
-            label = prediction.tag_name + ": {0:.2f}%".format(prediction.probability * 100)
-            cv2.putText(img, label, (left, top-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (200, 0, 0), 2)
-
+    read_result = computervision_client.get_read_result(operation_id)
+    if read_result.status not in ['notStarted', 'running']:
+        break
+    time.sleep(1)
+# show the image with rectangles drawn on it
+with open(img_path, 'rb') as data:
+    results = predictor.detect_image(project_id, published_name, data)
+# looping through predictions
+predictions = []
+for prediction in results.predictions:
+    if prediction.probability >= 0.9:
+        predictions.append(prediction.tag_name)
+        # set flag to True if at least one card is detected
+        card_detected = True
+        print("\t" + prediction.tag_name + ": {0:.2f}% bbox.left = {1:.2f}, bbox.top = {2:.2f}, bbox.width = {3:.2f}, bbox.height = {4:.2f}".format(prediction.probability * 100, prediction.bounding_box.left, prediction.bounding_box.top, prediction.bounding_box.width, prediction.bounding_box.height))
+        left = int(prediction.bounding_box.left * img.shape[1])
+        top = int(prediction.bounding_box.top * img.shape[0])
+        width = int(prediction.bounding_box.width * img.shape[1])
+        height = int(prediction.bounding_box.height * img.shape[0])
+        # draw the rectangle on the image
+        cv2.rectangle(img, (left, top), (left+width, top+height),(255,215,0), 2)
+        label = prediction.tag_name + ": {0:.2f}%".format(prediction.probability * 100)
+        cv2.putText(img, label, (left, top-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (200, 0, 0), 2)
 
     # check flag to see if any cards were detected
-    if 'Carte ID' in predictions:
-            engine.say('Les cartes id ne sont pas accepte')
-            print()
-    elif 'Carte Etudiant' in predictions:
-         for card in predictions:
-                if card == 'Carte Etudiant':
-                    exists = False
-                    if read_result.status == OperationStatusCodes.succeeded:
-                        text_detected = False
-                        for text_result in read_result.analyze_result.read_results:
+if 'Carte ID' in predictions:
+        engine.say('Les cartes id ne sont pas accepte')
+        engine.runAndWait()
+        print('Les cartes id ne sont pas accepte')
+elif 'Carte Etudiant' in predictions:
+     for card in predictions:
+            if card == 'Carte Etudiant':
+                exists = False
+                if read_result.status == OperationStatusCodes.succeeded:
+                    text_detected = False
+                    for text_result in read_result.analyze_result.read_results:
+                        if text_result.lines:
                             text_detected = True
                             for line in text_result.lines:
                                 print(line.text)
                                 print(line.bounding_box)
-                            if text_result.lines[5].text in approved or text_result.lines[5].text[0:3] in approved[0][0:3]:
-                                #for line in text_result.lines:
-                                #print(line.text)
-                                #print(line.bounding_box)
-                                exists =True        
-                        if not text_detected:
-                            #Speech
-                            print("Text nest pas claire")
-                        elif exists:
-                            #Speech
-                            print(text_result.lines[5].text)         
+                                for name in approved:
+                                    for line in text_result.lines:
+                                        if name[0:3] in line.text or name in line.text :
+                                        #for line in text_result.lines:
+                                        #print(line.text)
+                                        #print(line.bounding_box)
 
-                elif card == 'Carte ID':
+                                            exists =True
+                                            break  
+                                break
+                            break        
+                    if not text_detected:
+                        engine.say('Text nest pas claire')
+                        engine.runAndWait()
+                        led.color = Color(0, 0, 0)
+                        print("Text nest pas claire")
+                        break
+                    elif exists:
                         #Speech
-                        print()
-    else:
-         print('Aucune carte detectee')
-            #Speech
-
-
+                        print(name, 'Accée Approuvé')
+                        led.color = Color(0, 1, 0)
+                        engine.say(str(nom),'...','Accée Approuvé')
+                        engine.runAndWait()
+                        break
+                        
+                    else:
+                        led.color = Color(1, 0, 0)
+                        print('Acces Refusé')    
+                        engine.say('Acces Refusé')
+                        engine.runAndWait()     
+                        break
+else:
+    print('Aucune carte Etudiant n\'a éte detecte')
+    engine.say('Aucune carte Etudiant n\'a éte detecte')
+    engine.runAndWait()
+    led.color = Color(0, 0, 0)
 
 cv2.imshow("Image with predictions", img)
-cv2.waitKey(0)
+        #Speech
+# Print the URL of the uploaded image
+print("URL of the uploaded image:", file_url)
+
+cv2.waitKey(3000)
+cap.release()
 cv2.destroyAllWindows()
 '''
 END - Read File - remote
 '''
 
-print("End of Computer Vision quickstart.")
+print("End of Program.")
+
