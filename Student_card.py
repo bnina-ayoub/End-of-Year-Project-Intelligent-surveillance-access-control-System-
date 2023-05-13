@@ -167,7 +167,6 @@ while pir.wait_for_motion() and not Proceed:
         cv2.imshow('Result', frame)
         print("NO FACE DETECTED")
         led.color = Color(0, 0, 0)
-        cv2.destroyAllWindows()
 
     if yes == 4:
         led.color = Color(0, 1, 0) 
