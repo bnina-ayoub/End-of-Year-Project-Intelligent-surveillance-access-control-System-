@@ -121,9 +121,9 @@ nn = 0
 #engine.runAndWait()
 print('Waiting')
 pir.wait_for_motion()
+wait = time.time()
 led.color = Color(0, 0, 1)
 while pir.wait_for_motion() and not Proceed:
-    
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
@@ -167,41 +167,25 @@ while pir.wait_for_motion() and not Proceed:
         cv2.imshow('Result', frame)
     else:
         cv2.imshow('Result', frame)
-        print("NO FACE DETECTED")
-        led.color = Color(0, 0, 0)
-        cv2.destroyAllWindows()
+        if time.time() - wait:
+            print("NO FACE DETECTED")
+            led.color = Color(0, 0, 0)
 
     if yes == 4:
         led.color = Color(0, 1, 0) 
-        #engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
-        #engine.runAndWait()
+        engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
+        engine.runAndWait()
         print(indexx)
         Proceed = True
         video_writer.release()
     elif nn - yes == 300:
-            #engine.say(name, 'Visage non reconnue')
-            #engine.runAndWait()
+            engine.say(name, 'Visage non reconnue')
+            engine.runAndWait()
             led.color = Color(1, 0, 0)
             video_writer.release()
             break
     
     key = cv2.waitKey(1)
-    cv2.imwrite(face_path, frame)
-cap.release()
+cv2.imwrite(face_path, frame)
 video_writer.release()
-cv2.destroyAllWindows()
-
-
-timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-share_service_client = ShareServiceClient.from_connection_string(connection_string)
-# Get a ShareDirectoryClient object for the folder you want to upload the image to
-Video_folder = share_service_client.get_share_client(share_name).get_directory_client("Videos")
-# Upload the image to the folder
-file_client = Video_folder.upload_file(f"footage_{timestamp}.avi", data=open(filename, "rb"))
-# Release video resources
-Face_folder = share_service_client.get_share_client(share_name).get_directory_client("Faces")
-
-# Upload the image to the folder
-file_client = Face_folder.upload_file(f"Detected_Face_{timestamp}.jpg", data=open(face_path, "rb"))
-
 
