@@ -17,15 +17,6 @@ import datetime
 from azure.storage.fileshare import ShareServiceClient, ShareDirectoryClient, ShareFileClient
 import pyttsx3
 
-# Initialize the text-to-speech engine
-engine = pyttsx3.init()
-
-# Set the voice to use
-#voices = engine.getProperty('voices')
-#engine.setProperty('voice', voices[1].id)
-
-# Set the speech rate
-#engine.setProperty('rate', 150)
 
 '''Object Detector AUthentication'''
 ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
@@ -78,10 +69,20 @@ def findEncodeing1(img):
             encodeList.append(encode)
         return encodeList
 
+# Initialize the text-to-speech engine
+engine = pyttsx3.init()
+
+# Set the voice to use
+#voices = engine.getProperty('voices')
+#engine.setProperty('voice', voices[1].id)
+
+# Set the speech rate
+#engine.setProperty('rate', 150)
 base_image_location = os.path.join(os.path.dirname(__file__))
 img_path = os.path.join(base_image_location,"faces")
 face_path = os.path.join(base_image_location,'Face.jpg')
 imageList = os.listdir(img_path)
+led = RGBLED(red=18, green=23, blue=24)
 face = []
 faces_name = []
 
@@ -118,11 +119,9 @@ nn = 0
 #engine.say('I am in the while')
 #engine.runAndWait()
 print('Waiting')
-pir.wait_for_motion()
-while not Proceed:
-    stop = 0
-    print('Waiting')
-    pir.wait_for_motion()
+
+while pir.wait_for_no_motion() and not Proceed:
+    led.color = Color(0, 0, 1)
     ret, frame = cap.read()
     fr = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
     fr = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
@@ -165,14 +164,13 @@ while not Proceed:
         cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 0), 2)
         cv2.imshow('Result', frame)
     else:
-         cv2.imshow('Result', frame)
-         print("NO FACE DETECTED")
-         stop+=1
-         if stop == 10:
-            cv2.destroyAllWindows()
-    key = cv2.waitKey(1)
+        cv2.imshow('Result', frame)
+        print("NO FACE DETECTED")
+        led.color = Color(0, 0, 0)
+        cv2.destroyAllWindows()
 
     if yes == 4:
+        led.color = Color(0, 1, 0) 
         #engine.say(str(name), 'Visage Identifie,... Montrer ta carte etudiant pour proceder')
         #engine.runAndWait()
         print(indexx)
@@ -181,9 +179,11 @@ while not Proceed:
     elif nn - yes == 300:
             #engine.say(name, 'Visage non reconnue')
             #engine.runAndWait()
+            led.color = Color(1, 0, 0)
             video_writer.release()
             break
     
+    key = cv2.waitKey(1)
     cv2.imwrite(face_path, frame)
 cap.release()
 video_writer.release()
