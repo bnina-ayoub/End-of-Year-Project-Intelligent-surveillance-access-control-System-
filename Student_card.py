@@ -120,6 +120,7 @@ nn = 0
 
 print('Waiting')
 pir.wait_for_motion()
+wait = time.time()
 led.color = Color(0, 0, 1)
 while pir.wait_for_motion() and not Proceed:
     ret, frame = cap.read()
@@ -165,8 +166,9 @@ while pir.wait_for_motion() and not Proceed:
         cv2.imshow('Result', frame)
     else:
         cv2.imshow('Result', frame)
-        print("NO FACE DETECTED")
-        led.color = Color(0, 0, 0)
+        if time.time() - wait:
+            print("NO FACE DETECTED")
+            led.color = Color(0, 0, 0)
 
     if yes == 4:
         led.color = Color(0, 1, 0) 
@@ -207,11 +209,8 @@ This API call can also extract handwriting style text (not shown).
     '''
 print("===== Afficher Votre Carte Etudiant =====")
 
-<<<<<<< HEAD
 engine.say('Show your student Card')
 engine.runAndWait()
-=======
->>>>>>> 2ce41b718bd27895d11a6a25aaab632e1598d6fd
 
 
     # Capturing a frame from the webcam
