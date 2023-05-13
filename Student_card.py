@@ -21,10 +21,10 @@ import pyttsx3
 
 '''Object Detector AUthentication'''
 ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
-prediction_key = "84885c1265444390819a5df6c9f6fe47"
+prediction_key = "6fac6a25bd224a24ad95a8f4c1be3b9a"
 
 # Replace with your published iteration name and project ID
-published_name = "Card Detector"
+published_name = "FinalModelCard"
 project_id = "ba1ef21d-6dbc-4ea6-a4fe-aab291aab144"
 
 # Authenticate with the Custom Vision service
