@@ -1,48 +1,107 @@
-Certainly, here's an example of a professional README file for a project:
-
 # Intelligent Surveillance Access Control System
 
-This project is an intelligent surveillance access control system that uses Azure Cognitive Services to analyze images captured by surveillance cameras and grant or deny access to individuals based on their identification. The system can recognize different types of identification cards, such as student cards and national IDs, and compare them to a list of approved individuals to grant access.
+This project is an intelligent surveillance access control system that uses computer vision and deep learning techniques to detect and recognize individuals and grant access based on their identity. The system uses a Raspberry Pi 4 with a camera module to capture images and videos, and an Azure Cognitive Services Face API to perform facial recognition.
 
-## Table of Contents
+## Getting Started
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
+To run this project, you will need the following hardware and software:
 
-## Installation
+### Hardware
+- Raspberry Pi 4
+- Micro HDMI Adapter
+- Type C Cable
+- Raspberry Pi Camera Module / USB Webcam
+- RGB LED
+- PIR Motion Detection
+- 7 Jump wires
 
-To run this project, you'll need to have Python 3.6 or later installed, as well as the following Python libraries:
+### Software
+- Raspbian OS legacy
+- Python 3.7+
+- OpenCV 4.7.0
+- Azure Cognitive Services API subscription
+- Face_recognition
+- gpiozero
 
-- azure-cognitiveservices-vision-computervision
-- azure-storage-blob
-- opencv-python
-- pyttsx3
+### Installing Raspbian OS Legacy
 
-You can install these libraries using pip, for example:
+To install Raspbian OS legacy on Raspberry Pi 4, follow these steps:
 
+1. Download the Raspbian Buster with desktop (legacy) image from the official Raspberry Pi website.
+2. Flash the image onto a microSD card using a software like BalenaEtcher.
+3. Insert the microSD card into the Raspberry Pi and power it on.
+
+### Building OpenCV from Scratch
+
+To build OpenCV from scratch on Raspberry Pi 4, follow these steps:
+
+1. Install the dependencies:
 ```
-pip install azure-cognitiveservices-vision-computervision azure-storage-blob opencv-python pyttsx3
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+sudo apt-get install python3-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 ```
-
-You'll also need an Azure account with access to the Cognitive Services API and Azure Blob Storage.
-
-To configure the system, you'll need to create a `.env` file in the root directory of the project with the following environment variables:
-
-- `AZURE_COGNITIVE_SERVICES_ENDPOINT`: The endpoint URL for the Cognitive Services API
-- `AZURE_COGNITIVE_SERVICES_SUBSCRIPTION_KEY`: The subscription key for the Cognitive Services API
-- `AZURE_STORAGE_CONNECTION_STRING`: The connection string for Azure Blob Storage
-
+2. Clone the OpenCV repository:
+```
+git clone https://github.com/opencv/opencv.git
+cd opencv
+git checkout 4.5.4
+cd ..
+```
+3. Clone the OpenCV contrib repository:
+```
+git clone https://github.com/opencv/opencv_contrib.git
+cd opencv_contrib
+git checkout 4.5.4
+cd ..
+```
+4. Create a build directory and navigate into it:
+```
+mkdir build
+cd build
+```
+5. Configure the build using cmake:
+```
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+-D CMAKE_INSTALL_PREFIX=/usr/local \
+-D OPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules \
+-D ENABLE_NEON=ON \
+-D ENABLE_VFPV3=ON \
+-D BUILD_TESTS=OFF \
+-D INSTALL_PYTHON_EXAMPLES=OFF \
+-D BUILD_EXAMPLES=OFF ..
+```
+6. Build and install OpenCV:
+```
+make -j4
+sudo make install
+sudo ldconfig
+```
 ## Usage
 
-To run the system, simply run the `main.py` file with Python:
+To use this project, follow these steps:
 
+1. Clone the repository:
 ```
-python main.py
+git clone https://github.com/<username>/Intelligent-surveillance-access-control-system.git
+cd Intelligent-surveillance-access-control-system
+```
+2. Install the required Python packages:
+```
+pip install -r requirements.txt
+```
+3. Update the `subscription_key` and `endpoint` variables in the `face_api.py` file with your own Azure Cognitive Services Face API subscription key and endpoint.
+4. Run the `card_detect.py` script to detect and recognize individuals:
+```
+python card_detect.py
 ```
 
-The system will capture images from the default camera on your computer and analyze them for identification cards. If an identification card is detected, the system will compare it to the list of approved individuals and either grant or deny access.
+## Contributing
+
+Contributions are welcome. Please follow the [contributing guidelines](CONTRIBUTING.md) to submit your contributions.
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more information.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for
