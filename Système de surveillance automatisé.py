@@ -1,6 +1,5 @@
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
-from azure.cognitiveservices.vision.computervision.models import VisualFeatureTypes
 from azure.cognitiveservices.vision.customvision.prediction import CustomVisionPredictionClient
 from msrest.authentication import CognitiveServicesCredentials
 from msrest.authentication import ApiKeyCredentials
@@ -283,48 +282,34 @@ if Proceed:
                             for line in text_result.lines:
                                 print(line.text)
                                 print(line.bounding_box)
-                                for name in approved:
-                                    for line in text_result.lines:
-                                        if name[0:3] in line.text or name in line.text :
-                                        #for line in text_result.lines:
-                                        #print(line.text)
-                                        #print(line.bounding_box)
-
-                                            exists =True
-                                            break  
-                                break
+                                exists =True
+                                break  
                             break        
-                    if not text_detected or num_lines < 3:
+                    if not text_detected and num_lines <= 2:
                             engine.say('Text nest pas claire')
                             engine.runAndWait()
-                            led.color = Color(0, 0, 0)
+                            led.color = Color(1, 0, 0)
                             print("Text nest pas claire")
                             break
-                    elif exists:
-                            #Speech
-                            print(name, 'Accée Approuvé')
-                            led.color = Color(0, 1, 0)
-                            engine.say(str(nom),'...','Accée Approuvé')
-                            engine.runAndWait()
-                            break
-
-                    else:
-                            led.color = Color(1, 0, 0)
-                            print('Acces Refusé')    
-                            engine.say('Acces Refusé')
-                            engine.runAndWait()     
-                            break
+                    
+                #Speech
+                print(name, 'Accée Approuvé')
+                led.color = Color(0, 1, 0)
+                engine.say(str(name),'...','Accée Approuvé')
+                engine.runAndWait()
+                break
     else:
         print('Aucune carte Etudiant n\'a éte detecte')
-        #engine.say('Aucune carte Etudiant n\'a éte detecte')
-        #engine.runAndWait()
+        engine.say('Aucune carte Etudiant n\'a éte detecte')
+        engine.runAndWait()
+        led.color = Color(1, 0, 0)
 
     cv2.imshow("Image with predictions", img)
             #Speech
     # Print the URL of the uploaded image
     print("URL of the uploaded image:", file_url)
 
-cv2.waitKey(3000)
+cv2.waitKey(2000)
 cap.release()
 cv2.destroyAllWindows()
 led.color = Color(0, 0, 0)
