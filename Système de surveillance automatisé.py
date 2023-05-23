@@ -172,7 +172,7 @@ while pir.wait_for_motion() and not Proceed:
         print(indexx)
         Proceed = True
         video_writer.release()
-    elif nn - yes == 300:
+    elif nn - yes >= 10:
             engine.say(name, 'Visage non reconnue')
             engine.runAndWait()
             led.color = Color(1, 0, 0)
@@ -207,7 +207,7 @@ print("===== Afficher Votre Carte Etudiant =====")
 engine.say('Show your student Card')
 engine.runAndWait()
 
-
+cap = cv2.VideoCapture(0)
     # Capturing a frame from the webcam
 if Proceed:
     img_path = os.path.join(base_image_location,"Cards", "card.jpg")
