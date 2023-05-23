@@ -74,8 +74,8 @@ def findEncodeing1(img):
 engine = pyttsx3.init()
 
 # Set the voice to use
-#voices = engine.getProperty('voices')
-#engine.setProperty('voice', voices[1].id)
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[1].id)
 
 # Set the speech rate
 #engine.setProperty('rate', 150)

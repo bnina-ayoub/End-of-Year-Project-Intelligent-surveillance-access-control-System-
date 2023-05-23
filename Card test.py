@@ -29,12 +29,12 @@ engine = pyttsx3.init()
 #engine.setProperty('rate', 150)
 
 '''Object Detector AUthentication'''
-ENDPOINT_cv = ""
-prediction_key = ""
+ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
+prediction_key = "6fac6a25bd224a24ad95a8f4c1be3b9a"
 
 # Replace with your published iteration name and project ID
-published_name = ""
-project_id = ""
+published_name = "FinalModel"
+project_id = "ba1ef21d-6dbc-4ea6-a4fe-aab291aab144"
 
 # Authenticate with the Custom Vision service
 prediction_credentials = ApiKeyCredentials(in_headers={"Prediction-key": prediction_key})
@@ -42,9 +42,9 @@ predictor = CustomVisionPredictionClient(ENDPOINT_cv, prediction_credentials)
 base_image_location = os.path.join (os.path.dirname(__file__), "Images")
 
 #FileShare Credentials
-account_name = ""
-account_key = ""
-share_name = ""
+account_name = "pfarepository"
+account_key = "q4JdcaRYynIn7EbAXmgXXCtqvxI9Pl8ebbMv88Te0dVfGw3chdz8i3qkCSOi9/bJNQ/Ft5fQqX/J+AStXd3h0Q=="
+share_name = "surveilance-system-storage"
 
 connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};AccountKey={account_key};EndpointSuffix=core.windows.net"
 
@@ -55,16 +55,16 @@ connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};
 Authenticate
 Authenticates your credentials and creates a client.
 '''
-subscription_key = ""
-endpoint = ""
+subscription_key_ay = "5e6a70c79cb74f7497cda181e4e2c73a"
+endpoint_ay = "https://pfaproject.cognitiveservices.azure.com/"
 
-
-conn_str = "DefaultEndpointsProtocol=https;AccountName=pfarepository;AccountKey=q4JdcaRYynIn7EbAXmgXXCtqvxI9Pl8ebbMv88Te0dVfGw3chdz8i3qkCSOi9/bJNQ/Ft5fQqX/J+AStXd3h0Q==;EndpointSuffix=core.windows.net"
+subscription_key_fir = "828bac2d56a34e4da9ea7db5a256c779"
+endpoint_fir = "https://pfa-proj.cognitiveservices.azure.com/"
 
 # Create the BlobServiceClient object which will be used to access the container
 
 
-computervision_client = ComputerVisionClient(endpoint_ay, CognitiveServicesCredentials(subscription_key))
+computervision_client = ComputerVisionClient(endpoint_ay, CognitiveServicesCredentials(subscription_key_ay))
 
 base_image_location = os.path.join(os.path.dirname(__file__))
 
@@ -99,7 +99,7 @@ file_url = file_client.url
 print(file_url)
 img = cv2.imread(img_path)
 # Call API with URL and raw response (allows you to get the operation location)
-read_response = computervision_client.read(file_url + your_SAS_Token,  raw=True)
+read_response = computervision_client.read(file_url + '?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-05-23T21:14:32Z&st=2023-05-23T13:14:32Z&spr=https&sig=VSx9%2BUXdl%2B9jrQfEvD48uiwF6eDsl6j4pPn6xLNbbJc%3D',  raw=True)
 # Get the operation location (URL with an ID at the end) from the response
 read_operation_location = read_response.headers["Operation-Location"]
 # Grab the ID from the URL
