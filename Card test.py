@@ -30,11 +30,11 @@ engine = pyttsx3.init()
 
 '''Object Detector AUthentication'''
 ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
-prediction_key = "6fac6a25bd224a24ad95a8f4c1be3b9a"
+prediction_key = ""
 
 # Replace with your published iteration name and project ID
-published_name = "FinalModel"
-project_id = "ba1ef21d-6dbc-4ea6-a4fe-aab291aab144"
+published_name = ""
+project_id = ""
 
 # Authenticate with the Custom Vision service
 prediction_credentials = ApiKeyCredentials(in_headers={"Prediction-key": prediction_key})
@@ -42,9 +42,9 @@ predictor = CustomVisionPredictionClient(ENDPOINT_cv, prediction_credentials)
 base_image_location = os.path.join (os.path.dirname(__file__), "Images")
 
 #FileShare Credentials
-account_name = "pfarepository"
-account_key = "q4JdcaRYynIn7EbAXmgXXCtqvxI9Pl8ebbMv88Te0dVfGw3chdz8i3qkCSOi9/bJNQ/Ft5fQqX/J+AStXd3h0Q=="
-share_name = "surveilance-system-storage"
+account_name = ""
+account_key = ""
+share_name = ""
 
 connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};AccountKey={account_key};EndpointSuffix=core.windows.net"
 
@@ -55,11 +55,12 @@ connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};
 Authenticate
 Authenticates your credentials and creates a client.
 '''
-subscription_key_ay = "5e6a70c79cb74f7497cda181e4e2c73a"
-endpoint_ay = "https://pfaproject.cognitiveservices.azure.com/"
+subscription_key = ""
+endpoint = ""
 
-subscription_key_fir = "828bac2d56a34e4da9ea7db5a256c779"
-endpoint_fir = "https://pfa-proj.cognitiveservices.azure.com/"
+
+
+conn_str = ""
 
 # Create the BlobServiceClient object which will be used to access the container
 
