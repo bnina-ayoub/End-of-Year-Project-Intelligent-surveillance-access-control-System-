@@ -295,7 +295,7 @@ if Proceed:
                 #Speech
                 print(name, 'Accée Approuvé')
                 led.color = Color(0, 1, 0)
-                engine.say(str(name),'...','Accée Approuvé')
+                engine.say(str(name),'Accée Approuvé')
                 engine.runAndWait()
                 break
     else:
