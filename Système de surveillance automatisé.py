@@ -24,7 +24,7 @@ ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
 prediction_key = "6fac6a25bd224a24ad95a8f4c1be3b9a"
 
 # Replace with your published iteration name and project ID
-published_name = "FinalModelCard"
+published_name = "FinalModel"
 project_id = "ba1ef21d-6dbc-4ea6-a4fe-aab291aab144"
 
 # Authenticate with the Custom Vision service
