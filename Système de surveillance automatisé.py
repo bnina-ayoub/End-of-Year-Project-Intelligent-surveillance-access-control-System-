@@ -20,12 +20,12 @@ import pyttsx3
 
 
 '''Object Detector AUthentication'''
-ENDPOINT_cv = ""
-prediction_key = ""
+ENDPOINT_cv = "https://pfaproject.cognitiveservices.azure.com/"
+prediction_key = "6fac6a25bd224a24ad95a8f4c1be3b9a"
 
 # Replace with your published iteration name and project ID
-published_name = ""
-project_id = ""
+published_name = "FinalModelCard"
+project_id = "ba1ef21d-6dbc-4ea6-a4fe-aab291aab144"
 
 # Authenticate with the Custom Vision service
 prediction_credentials = ApiKeyCredentials(in_headers={"Prediction-key": prediction_key})
@@ -33,9 +33,9 @@ predictor = CustomVisionPredictionClient(ENDPOINT_cv, prediction_credentials)
 base_image_location = os.path.join (os.path.dirname(__file__), "Images")
 
 #FileShare Credentials
-account_name = ""
-account_key = ""
-share_name = ""
+account_name = "pfarepository"
+account_key = "q4JdcaRYynIn7EbAXmgXXCtqvxI9Pl8ebbMv88Te0dVfGw3chdz8i3qkCSOi9/bJNQ/Ft5fQqX/J+AStXd3h0Q=="
+share_name = "surveilance-system-storage"
 
 connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};AccountKey={account_key};EndpointSuffix=core.windows.net"
 
@@ -46,14 +46,19 @@ connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};
 Authenticate
 Authenticates your credentials and creates a client.
 '''
-subscription_key = ""
-endpoint = ""
+subscription_key_ay = "5e6a70c79cb74f7497cda181e4e2c73a"
+endpoint_ay = "https://pfaproject.cognitiveservices.azure.com/"
+
+subscription_key_fir = "828bac2d56a34e4da9ea7db5a256c779"
+endpoint_fir = "https://pfa-proj.cognitiveservices.azure.com/"
 
 
 conn_str = "DefaultEndpointsProtocol=https;AccountName=pfarepository;AccountKey=q4JdcaRYynIn7EbAXmgXXCtqvxI9Pl8ebbMv88Te0dVfGw3chdz8i3qkCSOi9/bJNQ/Ft5fQqX/J+AStXd3h0Q==;EndpointSuffix=core.windows.net"
 
+# Create the BlobServiceClient object which will be used to access the container
 
-computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
+
+computervision_client = ComputerVisionClient(endpoint_fir, CognitiveServicesCredentials(subscription_key_fir))
 
 
 
@@ -182,7 +187,7 @@ while pir.wait_for_motion() and not Proceed:
     key = cv2.waitKey(1)
 cv2.imwrite(face_path, frame)
 video_writer.release()
-
+cap.release()
 
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 share_service_client = ShareServiceClient.from_connection_string(connection_string)
@@ -208,6 +213,8 @@ engine.say('Show your student Card')
 engine.runAndWait()
 
 cap = cv2.VideoCapture(0)
+cap.set(3,640) # set Width
+cap.set(4,480) 
     # Capturing a frame from the webcam
 if Proceed:
     img_path = os.path.join(base_image_location,"Cards", "card.jpg")
