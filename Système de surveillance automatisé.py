@@ -231,7 +231,7 @@ if Proceed:
     print(file_url)
     img = cv2.imread(img_path)
     # Call API with URL and raw response (allows you to get the operation location)
-    read_response = computervision_client.read(file_url + '?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-05-14T03:43:32Z&st=2023-05-13T19:43:32Z&spr=https&sig=Rkk4D6Mi6aDlfe5GZ8IiX%2BILuDeM1OlHclj32GtH2vg%3D',  raw=True)
+    read_response = computervision_client.read(file_url + '?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2023-05-23T21:14:32Z&st=2023-05-23T13:14:32Z&spr=https&sig=VSx9%2BUXdl%2B9jrQfEvD48uiwF6eDsl6j4pPn6xLNbbJc%3D',  raw=True)
     # Get the operation location (URL with an ID at the end) from the response
     read_operation_location = read_response.headers["Operation-Location"]
     # Grab the ID from the URL
