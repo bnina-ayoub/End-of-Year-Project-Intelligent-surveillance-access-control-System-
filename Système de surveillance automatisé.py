@@ -271,28 +271,30 @@ if Proceed:
             print('Les cartes id ne sont pas accepte')
     elif 'Carte Etudiant' in predictions:
          for card in predictions:
-                if card == 'Carte Etudiant':
-                    exists = False
-                    if read_result.status == OperationStatusCodes.succeeded:
-                        text_detected = False
-                        for text_result in read_result.analyze_result.read_results:
-                            if text_result.lines:
-                                text_detected = True
-                                for line in text_result.lines:
-                                    print(line.text)
-                                    print(line.bounding_box)
-                                    for name in approved:
-                                        for line in text_result.lines:
-                                            if name[0:3] in line.text or name in line.text :
-                                            #for line in text_result.lines:
-                                            #print(line.text)
-                                            #print(line.bounding_box)
+              if card == 'Carte Etudiant':
+                exists = False
+                num_lines = 0
+                if read_result.status == OperationStatusCodes.succeeded:
+                    text_detected = False
+                    for text_result in read_result.analyze_result.read_results:
+                        if text_result.lines:
+                            text_detected = True
+                            num_lines += len(text_result.lines)
+                            for line in text_result.lines:
+                                print(line.text)
+                                print(line.bounding_box)
+                                for name in approved:
+                                    for line in text_result.lines:
+                                        if name[0:3] in line.text or name in line.text :
+                                        #for line in text_result.lines:
+                                        #print(line.text)
+                                        #print(line.bounding_box)
 
-                                                exists =True
-                                                break  
-                                    break
-                                break        
-                        if not text_detected:
+                                            exists =True
+                                            break  
+                                break
+                            break        
+                    if not text_detected or num_lines < 3:
                             engine.say('Text nest pas claire')
                             engine.runAndWait()
                             led.color = Color(0, 0, 0)
