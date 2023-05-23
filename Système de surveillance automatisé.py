@@ -265,9 +265,9 @@ if Proceed:
         # check flag to see if any cards were detected
     if 'Carte ID' in predictions:
             led.color = Color(1, 0, 0)
-            engine.say('Les cartes id ne sont pas accepte')
+            engine.say('ID Cards are not accepted')
             engine.runAndWait()
-            print('Les cartes id ne sont pas accepte')
+            print('ID Cards are not accepted')
     elif 'Carte Etudiant' in predictions:
          for card in predictions:
               if card == 'Carte Etudiant':
@@ -286,21 +286,21 @@ if Proceed:
                                 break  
                             break        
                     if not text_detected and num_lines <= 2:
-                            engine.say('Text nest pas claire')
+                            engine.say('Text is not clear')
                             engine.runAndWait()
                             led.color = Color(1, 0, 0)
-                            print("Text nest pas claire")
+                            print("Text is not clear")
                             break
                     
                 #Speech
-                print(name, 'Accée Approuvé')
+                print(name, 'Access Approuved')
                 led.color = Color(0, 1, 0)
-                engine.say(str(name),'...','Accée Approuvé')
+                engine.say(name,'...','Access Approuved')
                 engine.runAndWait()
                 break
     else:
-        print('Aucune carte Etudiant n\'a éte detecte')
-        engine.say('Aucune carte Etudiant n\'a éte detecte')
+        print('No student card has been detected')
+        engine.say('No student card has been detected')
         engine.runAndWait()
         led.color = Color(1, 0, 0)
 
