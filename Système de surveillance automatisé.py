@@ -300,7 +300,7 @@ if Proceed:
                             led.color = Color(0, 0, 0)
                             print("Text nest pas claire")
                             break
-                        elif exists:
+                    elif exists:
                             #Speech
                             print(name, 'Accée Approuvé')
                             led.color = Color(0, 1, 0)
@@ -308,7 +308,7 @@ if Proceed:
                             engine.runAndWait()
                             break
 
-                        else:
+                    else:
                             led.color = Color(1, 0, 0)
                             print('Acces Refusé')    
                             engine.say('Acces Refusé')
