@@ -47,14 +47,14 @@ sudo apt-get install python3-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev li
 ```
 git clone https://github.com/opencv/opencv.git
 cd opencv
-git checkout 4.5.4
+git checkout 4.7.0
 cd ..
 ```
 3. Clone the OpenCV contrib repository:
 ```
 git clone https://github.com/opencv/opencv_contrib.git
 cd opencv_contrib
-git checkout 4.5.4
+git checkout 4.7.0
 cd ..
 ```
 4. Create a build directory and navigate into it:
@@ -93,15 +93,13 @@ cd Intelligent-surveillance-access-control-system
 pip install -r requirements.txt
 ```
 3. Update the `subscription_key` and `endpoint` variables in the `face_api.py` file with your own Azure Cognitive Services Face API subscription key and endpoint.
-4. Run the `card_detect.py` script to detect and recognize individuals:
+4. Run the `
+Système de surveillance automatisé.py` script:
 ```
-python card_detect.py
+python Système de surveillance automatisé.py
 ```
 
 ## Contributing
 
 Contributions are welcome. Please follow the [contributing guidelines](CONTRIBUTING.md) to submit your contributions.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for
