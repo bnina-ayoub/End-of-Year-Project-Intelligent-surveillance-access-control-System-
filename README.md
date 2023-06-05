@@ -1,6 +1,6 @@
 # Intelligent Surveillance Access Control System
 
-This project is an intelligent surveillance access control system that uses computer vision and deep learning techniques to detect and recognize individuals and grant access based on their identity. The system uses a Raspberry Pi 4 with a camera module to capture images and videos, and an Azure Cognitive Services Face API to perform facial recognition.
+This project is an intelligent surveillance access control system that uses computer vision and deep learning techniques to detect and recognize individuals and grant access based on their identity. The system uses a Raspberry Pi 4 with a camera module to capture images and videos, and an Azure Cognitive Services Custom Vision for student card detection and a local Face Recognition library to perform facial recognition.
 
 ## Getting Started
 
