@@ -92,14 +92,14 @@ cd Intelligent-surveillance-access-control-system
 ```
 pip install -r requirements.txt
 ```
-3. Update the `subscription_key` and `endpoint` variables in the `face_api.py` file with your own Azure Cognitive Services Face API subscription key and endpoint.
-4. Run the `
-Système de surveillance automatisé.py` script:
+3. Update the `subscription_key` and `endpoint` variables in the `Système de surveillance automatisé.py` file with your own Azure Cognitive Services subscription key and endpoint and the prediction key for your trained model
+4. Run the 
+`Système de surveillance automatisé.py` script:
 ```
-python Système de surveillance automatisé.py
+python "Système de surveillance automatisé.py"
 ```
 
 ## Contributing
 
-Contributions are welcome. Please follow the [contributing guidelines](CONTRIBUTING.md) to submit your contributions.
+Contributions are welcome.
 
